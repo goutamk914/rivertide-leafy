@@ -1,0 +1,311 @@
+/* Leafy pet window. Transparent everywhere except Leafy, the toolbar and the speech bubble.
+   The bubble is always paper-white (like a comic speech balloon), whatever the theme. */
+
+:root {
+  --lf-bubble-fill: #ffffff;
+  --lf-bubble-ink: #121412;
+  --lf-bubble-muted: #5c605c;
+  --lf-bubble-ok: #2e7a26;
+  --lf-bubble-danger: #b4233f;
+  --lf-bubble-shadow: 0 1px 0 rgb(0 0 0 / 0.05), 0 14px 30px -10px rgb(0 0 0 / 0.55);
+  --lf-ground: rgb(0 0 0 / 0.32);
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+}
+
+body {
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+}
+
+.lf-stage {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ── Leafy ─────────────────────────────────────────────────────────────── */
+.lf-sprite {
+  position: absolute;
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+  border-radius: 14px;
+  outline: none;
+}
+
+.lf-sprite[data-dragging='true'] {
+  cursor: grabbing;
+}
+
+.lf-sprite:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.lf-sprite canvas {
+  position: relative;
+  display: block;
+}
+
+.lf-ground {
+  position: absolute;
+  left: 50%;
+  bottom: 1px;
+  width: 64%;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--lf-ground);
+  filter: blur(4px);
+  transform: translateX(-50%);
+  transition:
+    transform var(--dur-panel) var(--ease),
+    opacity var(--dur-panel) var(--ease);
+}
+
+.lf-stage[data-dragging='true'] .lf-ground {
+  opacity: 0.45;
+  transform: translateX(-50%) scale(0.72);
+}
+
+/* ── Toolbar ───────────────────────────────────────────────────────────── */
+.lf-toolbar {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  box-shadow:
+    0 0 0 1px var(--hairline-strong),
+    var(--shadow-lifted);
+  pointer-events: auto;
+  transform-origin: 50% 100%;
+  transition:
+    opacity var(--dur-panel) var(--ease),
+    transform var(--dur-panel) var(--ease),
+    visibility 0s linear 0s;
+}
+
+.lf-toolbar[data-visible='false'] {
+  opacity: 0;
+  transform: translateY(8px) scale(0.96);
+  pointer-events: none;
+  visibility: hidden;
+  transition:
+    opacity var(--dur-color) var(--ease),
+    transform var(--dur-color) var(--ease),
+    visibility 0s linear var(--dur-color);
+}
+
+/* Keyboard users can always reach the toolbar; focus reveals it. */
+.lf-toolbar:focus-within {
+  opacity: 1;
+  transform: none;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.lf-tool {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--ink-muted);
+  cursor: pointer;
+  transition:
+    background-color var(--dur-color) var(--ease),
+    color var(--dur-color) var(--ease),
+    transform var(--dur-micro) var(--ease);
+}
+
+.lf-tool:active {
+  transform: scale(0.96);
+}
+
+.lf-tool--mic {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.lf-tool--mic[data-state='busy'] {
+  background: var(--surface-4);
+  color: var(--ink);
+}
+
+@media (hover: hover) {
+  .lf-tool:hover {
+    background: var(--ghost-fill-hover);
+    color: var(--ink);
+  }
+
+  .lf-tool--mic:hover {
+    background: var(--accent-strong);
+    color: var(--accent-ink);
+  }
+}
+
+.lf-tip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 10px;
+  background: var(--surface-4);
+  color: var(--ink);
+  box-shadow: var(--shadow-lifted);
+  font: 500 12px/1 var(--font-body);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(2px);
+  transition:
+    opacity var(--dur-micro) var(--ease),
+    transform var(--dur-micro) var(--ease);
+}
+
+.lf-tool:focus-visible .lf-tip {
+  opacity: 1;
+  transform: translateX(-50%);
+}
+
+@media (hover: hover) {
+  .lf-tool:hover .lf-tip {
+    opacity: 1;
+    transform: translateX(-50%);
+    transition-delay: 380ms;
+  }
+}
+
+.lf-tip__kbd {
+  font: 500 11px/1 var(--font-mono);
+  letter-spacing: 0.04em;
+  color: var(--ink-faint);
+}
+
+/* ── Speech bubble ─────────────────────────────────────────────────────── */
+.lf-bubble-region {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  pointer-events: none;
+}
+
+.lf-bubble {
+  position: absolute;
+  width: max-content;
+  padding: 10px 14px 11px;
+  border-radius: var(--radius-card);
+  background: var(--lf-bubble-fill);
+  color: var(--lf-bubble-ink);
+  box-shadow: var(--lf-bubble-shadow);
+  pointer-events: auto;
+  cursor: default;
+}
+
+.lf-bubble__title {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  font: 600 15px/1.32 var(--font-display);
+  letter-spacing: -0.012em;
+  text-wrap: pretty;
+  animation: lf-settle var(--dur-color) var(--ease) both;
+}
+
+.lf-bubble__status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 3px 0 0;
+  font: 400 12.5px/1.35 var(--font-body);
+  color: var(--lf-bubble-muted);
+}
+
+.lf-bubble__tail {
+  position: absolute;
+  bottom: -5px;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  background: var(--lf-bubble-fill);
+  transform: rotate(45deg);
+}
+
+.lf-bubble__glyph--done {
+  color: var(--lf-bubble-ok);
+}
+
+.lf-bubble__glyph--error {
+  color: var(--lf-bubble-danger);
+}
+
+.lf-bubble__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--lf-bubble-ok);
+  animation: lf-breathe 1.6s var(--ease) infinite;
+}
+
+.lf-bubble__dots {
+  display: inline-flex;
+  gap: 3px;
+}
+
+.lf-bubble__dots span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: lf-breathe 1.2s var(--ease) infinite;
+}
+
+.lf-bubble__dots span:nth-child(2) {
+  animation-delay: 160ms;
+}
+
+.lf-bubble__dots span:nth-child(3) {
+  animation-delay: 320ms;
+}
+
+@keyframes lf-breathe {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes lf-settle {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

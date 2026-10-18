@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en" class="is-transparent">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Leafy palette</title>
+    <style>
+      /* Overlay windows are transparent; the page draws its own surface. */
+      html.is-transparent,
+      html.is-transparent body {
+        background: transparent;
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body class="window-palette">
+    <div id="root"></div>
+    <script type="module" src="./palette/main.tsx"></script>
+  </body>
+</html>

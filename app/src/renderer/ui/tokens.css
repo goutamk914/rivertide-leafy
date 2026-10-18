@@ -1,0 +1,146 @@
+/* Rivertide design tokens — single source for every window. See docs/DESIGN.md.
+   Components use these variables only; never raw hex. */
+@import '@fontsource-variable/inter';
+@import '@fontsource/atkinson-hyperlegible-next/400.css';
+@import '@fontsource/atkinson-hyperlegible-next/700.css';
+@import '@fontsource-variable/jetbrains-mono';
+
+:root {
+  color-scheme: dark;
+  --bg: #0b0c0b;
+  --bg-raised: #101211;
+  --surface-1: #151716;
+  --surface-2: #1b1d1c;
+  --surface-3: #232624;
+  --surface-4: #2c2f2d;
+  --ink: #f2f4f1;
+  --ink-muted: rgb(242 244 241 / 0.64);
+  --ink-faint: rgb(242 244 241 / 0.42);
+  --ink-ghost: rgb(242 244 241 / 0.24);
+  --hairline: rgb(255 255 255 / 0.08);
+  --hairline-strong: rgb(255 255 255 / 0.14);
+  --ghost-fill: rgb(255 255 255 / 0.07);
+  --ghost-fill-hover: rgb(255 255 255 / 0.12);
+  --accent: #8fd27a;
+  --accent-strong: #5cbf4a;
+  --accent-ink: #0d1f0b;
+  --accent-soft: rgb(143 210 122 / 0.14);
+  --ask: #ff8a3d;
+  --warn: #e9a21a;
+  --danger: #ff6b8a;
+  --info: #7cc4ff;
+  --focus: #c8f2ad;
+
+  --font-display: 'Inter Variable', 'Inter', system-ui, sans-serif;
+  --font-body: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, monospace;
+  --text-scale: 1;
+
+  --radius-pill: 999px;
+  --radius-control: 12px;
+  --radius-card: 18px;
+  --radius-panel: 24px;
+  --radius-key: 12px;
+
+  --shadow-lifted: inset 0 1px 0 rgb(255 255 255 / 0.07), 0 28px 44px -20px rgb(0 0 0 / 0.9);
+  --shadow-window: 0 0 0 1px rgb(255 255 255 / 0.06), 0 24px 60px -12px rgb(0 0 0 / 0.75);
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-micro: 120ms;
+  --dur-color: 160ms;
+  --dur-panel: 240ms;
+  --dur-materialize: 320ms;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f5f5f2;
+  --bg-raised: #fbfbf9;
+  --surface-1: #ffffff;
+  --surface-2: #eeeee9;
+  --surface-3: #e5e5df;
+  --surface-4: #d9d9d2;
+  --ink: #111311;
+  --ink-muted: #5c605c;
+  --ink-faint: #7a7e7a;
+  --ink-ghost: rgb(17 19 17 / 0.28);
+  --hairline: rgb(17 19 17 / 0.1);
+  --hairline-strong: rgb(17 19 17 / 0.18);
+  --ghost-fill: rgb(17 19 17 / 0.05);
+  --ghost-fill-hover: rgb(17 19 17 / 0.09);
+  --accent: #3f8f35;
+  --accent-strong: #2e7a26;
+  --accent-ink: #ffffff;
+  --accent-soft: rgb(63 143 53 / 0.12);
+  --focus: #2e7a26;
+  --shadow-window: 0 0 0 1px rgb(17 19 17 / 0.08), 0 24px 60px -12px rgb(0 0 0 / 0.25);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: calc(16px * var(--text-scale));
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  text-wrap: balance;
+  margin: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--accent-soft);
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.pixelated {
+  image-rendering: pixelated;
+}
+
+/* The OS preference applies unless the user turned motion back on in Settings (data-reduce-motion="off"). */
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-reduce-motion='off']) *,
+  :root:not([data-reduce-motion='off']) *::before,
+  :root:not([data-reduce-motion='off']) *::after {
+    animation-duration: 150ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 150ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:root[data-reduce-motion='on'] *,
+:root[data-reduce-motion='on'] *::before,
+:root[data-reduce-motion='on'] *::after {
+  animation-duration: 150ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 150ms !important;
+}

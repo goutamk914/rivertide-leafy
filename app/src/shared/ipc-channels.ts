@@ -1,0 +1,100 @@
+/**
+ * Channel names only (no schemas) so the sandboxed preload stays tiny.
+ * `ipc.ts` type-checks that every name here has a schema and a result type.
+ */
+
+/** renderer → main, request/response (`ipcRenderer.invoke`). */
+export const INVOKE_CHANNELS = [
+  'app:info',
+  'settings:get',
+  'settings:update',
+  'secrets:status',
+  'secrets:set',
+  'secrets:clear',
+  'providers:test',
+  'permissions:status',
+  'permissions:request',
+  'permissions:openSettings',
+  'hotkeys:status',
+  'history:list',
+  'history:get',
+  'history:delete',
+  'history:clear',
+  'history:repaste',
+  'knowledge:list',
+  'knowledge:upsert',
+  'knowledge:delete',
+  'knowledge:graph',
+  'dictionary:list',
+  'dictionary:upsert',
+  'dictionary:delete',
+  'documents:list',
+  'documents:pick',
+  'documents:importText',
+  'documents:get',
+  'documents:delete',
+  'chat:list',
+  'chat:get',
+  'chat:create',
+  'chat:rename',
+  'chat:delete',
+  'chat:send',
+  'notes:list',
+  'notes:upsert',
+  'notes:delete',
+  'reminders:list',
+  'reminders:create',
+  'reminders:cancel',
+  'insights:usage',
+  'insights:dynamics',
+  'voice:snapshot',
+  'voice:start',
+  'voice:stop',
+  'voice:cancel',
+  'agent:ask',
+  'agent:confirm',
+  'agent:cancel',
+  'palette:search',
+  'palette:execute',
+  'palette:hide',
+  'palette:resize',
+  'leafy:pointer',
+  'leafy:moveTo',
+  'leafy:dragEnd',
+  'leafy:menu',
+  'leafy:position',
+  'island:pointer',
+  'window:open',
+  'window:close',
+  'window:minimize',
+  'data:export',
+  'data:wipe',
+  'system:openExternal',
+  'engine:ready',
+  'engine:capture',
+  'engine:clap',
+  'engine:voices',
+  'engine:error',
+] as const;
+
+/** renderer → main, fire-and-forget (`ipcRenderer.send`), for high-frequency data. */
+export const SEND_CHANNELS = ['engine:level', 'engine:wake-audio'] as const;
+
+/** main → renderer pushes. */
+export const EVENT_CHANNELS = [
+  'settings:changed',
+  'voice:snapshot',
+  'audio:level',
+  'agent:event',
+  'chat:event',
+  'data:changed',
+  'leafy:cue',
+  'navigate',
+  'palette:open',
+  'engine:command',
+  'toast',
+] as const;
+
+export type InvokeChannel = (typeof INVOKE_CHANNELS)[number];
+export type SendChannel = (typeof SEND_CHANNELS)[number];
+export type EventChannel = (typeof EVENT_CHANNELS)[number];

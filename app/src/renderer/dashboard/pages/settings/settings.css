@@ -1,0 +1,227 @@
+/* Settings page. Tonal surfaces only; the accent marks state, never fills a block. */
+
+.settings-layout {
+  display: grid;
+  grid-template-columns: minmax(180px, 220px) minmax(0, 1fr);
+  gap: var(--space-8);
+  align-items: start;
+}
+
+/* ---------- Sub-nav ---------- */
+.settings-nav {
+  position: sticky;
+  top: 0;
+}
+
+.settings-nav__list {
+  list-style: none;
+  display: grid;
+  gap: 2px;
+}
+
+.settings-nav__link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--control-h);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-control);
+  color: var(--ink-muted);
+  font-family: var(--font-display);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+@media (hover: hover) {
+  .settings-nav__link:hover {
+    background: var(--ghost-fill);
+    color: var(--ink);
+  }
+}
+
+.settings-nav__link:active {
+  background: var(--ghost-fill-hover);
+}
+
+.settings-nav__link[aria-current='page'] {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+.settings-nav__link[aria-current='page'] svg {
+  color: var(--accent);
+}
+
+/* ---------- Content ---------- */
+.settings-content {
+  min-width: 0;
+}
+
+.settings-section {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.settings-section > .rt-section-head {
+  margin-bottom: 0;
+}
+
+.settings-section > .rt-section-head .rt-section-head__title {
+  font-size: var(--text-xl);
+}
+
+.settings-group {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.settings-group__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.settings-group__title {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.settings-group__description {
+  margin-top: 4px;
+  max-width: 62ch;
+  color: var(--ink-muted);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+
+.settings-group__actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.settings-group__body {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.settings-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-4);
+}
+
+.settings-row__text {
+  display: grid;
+  gap: 2px;
+  flex: 1 1 16rem;
+  min-width: 0;
+}
+
+.settings-row__label {
+  font-family: var(--font-display);
+  font-weight: 500;
+}
+
+.settings-row__description,
+.settings-note {
+  color: var(--ink-muted);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  max-width: 62ch;
+}
+
+.settings-note--warn {
+  color: var(--warn);
+}
+
+.settings-icon-inline {
+  flex-shrink: 0;
+  vertical-align: -2px;
+}
+
+.settings-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.settings-callout {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  padding: var(--space-4);
+  border-radius: var(--radius-control);
+  background: var(--surface-2);
+  color: var(--ink-muted);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+
+.settings-callout svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--ink);
+}
+
+/* ---------- Saved indicator ---------- */
+.settings-saved {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 16rem;
+  max-width: 28rem;
+  min-height: var(--control-h-sm);
+  align-items: center;
+  color: var(--ink-faint);
+  font-size: var(--text-sm);
+  text-align: right;
+}
+
+.settings-saved__inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  animation: rt-fade-in var(--dur-color) var(--ease) both;
+}
+
+.settings-saved--saved {
+  color: var(--accent);
+}
+
+.settings-saved--error {
+  color: var(--danger);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .settings-saved__inner {
+    animation: none;
+  }
+}
+
+:root[data-reduce-motion='on'] .settings-saved__inner {
+  animation: none;
+}
+
+/* Narrow windows: the sub-nav wraps above the content instead of squeezing it. */
+@media (max-width: 1040px) {
+  .settings-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-5);
+  }
+
+  .settings-nav {
+    position: static;
+  }
+
+  .settings-nav__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+  }
+}

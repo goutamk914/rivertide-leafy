@@ -1,0 +1,209 @@
+/* Home hero and the hold-fn demo. */
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: min(100svh, 880px);
+  padding-block: 84px 112px;
+}
+
+.hero__grid {
+  display: grid;
+  gap: 48px;
+  align-items: center;
+}
+
+@media (min-width: 960px) {
+  .hero__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 452px);
+    gap: clamp(40px, 4vw, 56px);
+  }
+}
+
+.hero__title {
+  font-size: clamp(40px, 4.1vw, 54px);
+}
+
+.hero__lede {
+  margin-top: 24px;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.hero__note {
+  margin-top: 20px;
+  color: var(--ink-muted);
+  font-size: 15px;
+}
+
+.hero__demo {
+  position: relative;
+}
+
+/* The page's one accent glow: faint, behind the demo, never on text. */
+.hero__glow {
+  position: absolute;
+  inset: -12% -10%;
+  z-index: -1;
+  background: radial-gradient(closest-side, var(--accent-glow), transparent);
+  pointer-events: none;
+}
+
+/* ---------- Hold demo ---------- */
+.hold-demo {
+  position: relative;
+  padding: 20px;
+}
+
+.hold-demo__screen {
+  padding: 20px 22px 22px;
+  border-radius: var(--r-card);
+  background: var(--bg);
+}
+
+.hold-demo__heard,
+.hold-demo__placeholder {
+  min-height: calc(1.6em * 3);
+  margin-top: 8px;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.hold-demo__heard {
+  color: var(--ink);
+}
+
+.hold-demo__placeholder {
+  color: var(--ink-muted);
+}
+
+.hold-demo__word {
+  transition:
+    color 320ms var(--ease),
+    opacity 320ms var(--ease);
+}
+
+.hold-demo__word:last-child {
+  animation: rt-unblur 320ms var(--ease) both;
+}
+
+.hold-demo__word.is-dropped {
+  color: var(--ink-faint);
+  text-decoration: line-through;
+  text-decoration-color: var(--ink-faint);
+  text-decoration-thickness: 1.5px;
+}
+
+.hold-demo__rule {
+  height: 1px;
+  margin-block: 14px 16px;
+  background: var(--hairline);
+}
+
+.hold-demo__typed {
+  min-height: calc(1.45em * 2);
+  margin-top: 8px;
+  color: var(--ink);
+  font-family: var(--ff-display);
+  font-size: clamp(19px, 1.7vw, 22px);
+  line-height: 1.45;
+  letter-spacing: -0.015em;
+}
+
+.hold-demo .hold-demo__placeholder:last-child {
+  min-height: calc(1.45em * 2);
+}
+
+.hold-demo__controls {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 20px;
+  padding: 22px 6px 6px;
+}
+
+.hold-demo__key {
+  --key-size: 84px;
+}
+
+.hold-demo__fn {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  font-size: 14px;
+}
+
+.hold-demo__globe {
+  position: absolute;
+  bottom: 13px;
+  left: 13px;
+}
+
+.hold-demo__status {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.hold-demo__hint {
+  margin-top: 6px;
+  color: var(--ink-muted);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+
+.hold-demo__play {
+  min-height: 32px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--ink-ghost);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  .hold-demo__play:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
+/* Leafy stands on the top edge of the demo and reacts to the key. */
+.hold-demo__leafy {
+  position: absolute;
+  right: 32px;
+  bottom: calc(100% - 4px);
+}
+
+@media (max-width: 520px) {
+  .hold-demo {
+    padding: 14px;
+  }
+
+  .hold-demo__screen {
+    padding: 16px;
+  }
+
+  .hold-demo__controls {
+    gap: 14px;
+  }
+
+  .hold-demo__leafy {
+    right: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hold-demo__word:last-child {
+    animation: none;
+  }
+}

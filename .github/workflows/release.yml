@@ -1,0 +1,171 @@
+# Builds Rivertide for macOS as one universal (Apple Silicon + Intel) app: signs it with the
+# Developer ID certificate, notarizes and staples it, verifies it (including the copies inside the
+# zip and the DMG, and a test launch), and only then uploads the DMG, the zip (what auto-update
+# installs) and latest-mac.yml to a DRAFT release on CodeTheCure/rivertide-electron. A maintainer
+# checks the draft and presses Publish.
+#
+#   push a tag v<version>     → release (all signing secrets are required)
+#   Actions → Run workflow    → dry run: same build and checks, nothing is published; the files are
+#                               attached to the run. Without signing secrets it builds ad-hoc.
+#
+# Secrets live in the "release" environment; setup is in app/README.md → "Releases".
+name: Release (macOS)
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-mac-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  mac:
+    name: Universal DMG
+    runs-on: macos-15
+    timeout-minutes: 75
+    # Protect this environment (required reviewers, v* tags only) so signing secrets are released
+    # to a run only after someone approves it.
+    environment: release
+    permissions:
+      contents: write # electron-builder creates the draft release and uploads its assets
+    env:
+      IS_RELEASE: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') }}
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check the tag matches the app version
+        if: env.IS_RELEASE == 'true'
+        run: |
+          expected="v$(node -p "require('./app/package.json').version")"
+          if [[ "$GITHUB_REF_NAME" != "$expected" ]]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match app/package.json ($expected). Bump the version first."
+            exit 1
+          fi
+
+      - name: Type-check and test
+        run: npm run check -w app
+
+      # Compiles the helper, renderer and main process with no secrets in the environment.
+      - name: Build
+        run: npm run build -w app
+
+      - name: Choose signing mode
+        id: signing
+        env:
+          HAS_MACOS_CERTIFICATE_P12_BASE64: ${{ secrets.MACOS_CERTIFICATE_P12_BASE64 != '' }}
+          HAS_MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD != '' }}
+          HAS_APPLE_API_KEY_P8: ${{ secrets.APPLE_API_KEY_P8 != '' }}
+          HAS_APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID != '' }}
+          HAS_APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER != '' }}
+        run: |
+          missing=()
+          for name in MACOS_CERTIFICATE_P12_BASE64 MACOS_CERTIFICATE_PASSWORD APPLE_API_KEY_P8 APPLE_API_KEY_ID APPLE_API_ISSUER; do
+            flag="HAS_$name"
+            [[ "${!flag}" == "true" ]] || missing+=("$name")
+          done
+          if [[ ${#missing[@]} -eq 0 ]]; then
+            echo "mode=signed" >> "$GITHUB_OUTPUT"
+          elif [[ "$IS_RELEASE" == "true" ]]; then
+            echo "::error::A release needs every signing secret. Missing: ${missing[*]}"
+            exit 1
+          else
+            echo "::warning::Dry run without signing secrets (missing: ${missing[*]}). Building ad-hoc signed and not notarized; this build can't be shipped."
+            echo "mode=adhoc" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Package, sign and notarize
+        if: steps.signing.outputs.mode == 'signed'
+        env:
+          CSC_LINK: ${{ secrets.MACOS_CERTIFICATE_P12_BASE64 }}
+          CSC_KEY_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+          APPLE_API_KEY_P8: ${{ secrets.APPLE_API_KEY_P8 }}
+          APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
+          APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
+        run: |
+          # notarytool wants the .p8 as a file; it lives only for this step.
+          export APPLE_API_KEY="$RUNNER_TEMP/AuthKey_${APPLE_API_KEY_ID}.p8"
+          trap 'rm -f "$APPLE_API_KEY"' EXIT
+          (umask 077 && printf '%s\n' "$APPLE_API_KEY_P8" > "$APPLE_API_KEY")
+          npm run pack:signed -w app
+
+      - name: Package (ad-hoc, dry run only)
+        if: steps.signing.outputs.mode == 'adhoc'
+        run: npm run pack:adhoc -w app
+
+      - name: Verify the app, the zip, the DMG and a test launch
+        env:
+          MODE: ${{ steps.signing.outputs.mode }}
+        run: |
+          if [[ "$MODE" == "signed" ]]; then
+            npm run verify:mac -w app -- --release --artifacts --launch
+          else
+            npm run verify:mac -w app -- --artifacts --launch
+          fi
+
+      - name: Upload build files to the run
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: rivertide-mac-${{ steps.signing.outputs.mode }}-${{ github.sha }}
+          retention-days: 14
+          if-no-files-found: error
+          path: |
+            app/release/*.dmg
+            app/release/*.zip
+            app/release/*.blockmap
+            app/release/latest-mac.yml
+
+      - name: Publish to a draft release
+        id: publish
+        if: env.IS_RELEASE == 'true'
+        env:
+          # GITHUB_TOKEN works when this workflow runs in CodeTheCure/rivertide-electron itself.
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
+        run: npm run publish:mac -w app
+
+      # electron-builder logs upload failures but exits 0, so confirm the files really arrived.
+      - name: Check the release has every file
+        id: published
+        if: env.IS_RELEASE == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          gh api "repos/CodeTheCure/rivertide-electron/releases?per_page=30" > "$RUNNER_TEMP/releases.json"
+          node app/scripts/check-release-assets.mjs "$RUNNER_TEMP/releases.json" "$GITHUB_REF_NAME" \
+            app/release/*.dmg app/release/*.dmg.blockmap app/release/*.zip app/release/*.zip.blockmap app/release/latest-mac.yml
+
+      - name: Summary
+        if: always()
+        env:
+          MODE: ${{ steps.signing.outputs.mode }}
+          PUBLISHED: ${{ steps.published.outcome }}
+        run: |
+          {
+            echo "### Rivertide macOS build"
+            echo "- Trigger: \`${GITHUB_EVENT_NAME}\` on \`${GITHUB_REF_NAME}\`"
+            echo "- Signing: \`${MODE:-not reached}\`"
+            if [[ "$IS_RELEASE" != "true" ]]; then
+              echo "- Dry run: nothing published. Download the files from this run's artifacts."
+            elif [[ "$PUBLISHED" == "success" ]]; then
+              echo "- Uploaded to a **draft** release on CodeTheCure/rivertide-electron; review it and press Publish."
+            else
+              echo "- **Not published** (publish check: \`${PUBLISHED:-skipped}\`). See the failed step above."
+            fi
+            ls -lh app/release/*.dmg app/release/*.zip 2>/dev/null | awk '{print "- `" $NF "` (" $5 ")"}'
+          } >> "$GITHUB_STEP_SUMMARY"

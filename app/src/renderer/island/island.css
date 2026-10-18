@@ -1,0 +1,295 @@
+/* Dynamic Island window. The capsule is always black with white ink, whatever the theme
+   (DESIGN.md), so its content uses the fixed island tokens below. */
+
+:root {
+  --il-ink: #ffffff;
+  --il-on-ink: #000000;
+  --il-ink-muted: rgb(255 255 255 / 0.66);
+  --il-ink-faint: rgb(255 255 255 / 0.42);
+  --il-fill: rgb(255 255 255 / 0.12);
+  --il-fill-hover: rgb(255 255 255 / 0.2);
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+}
+
+body {
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+}
+
+.il-stage {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  padding-top: 8px;
+  pointer-events: none;
+}
+
+.il-wrap {
+  width: 100%;
+  opacity: 1;
+  transition: opacity var(--dur-color) var(--ease);
+}
+
+/* Resting: the capsule shrinks to a pill first, then fades away (main hides the window soon after). */
+.il-wrap[data-visible='false'] {
+  opacity: 0;
+  transition: opacity var(--dur-panel) var(--ease) 380ms;
+}
+
+.il-wrap[data-visible='false'] .rt-island__capsule {
+  pointer-events: none !important;
+}
+
+.rt-island__capsule {
+  font-family: var(--font-body);
+  color: var(--il-ink);
+}
+
+/* ── Slots ─────────────────────────────────────────────────────────────── */
+.il-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 600 13.5px/1 var(--font-display);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.il-chip__leafy {
+  margin: -2px -2px 0 -4px;
+}
+
+.il-chip__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--ask);
+}
+
+.il-chip__leaf {
+  color: var(--accent);
+}
+
+.il-locked {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--il-fill);
+  color: var(--il-ink-muted);
+  font: 500 11px/1 var(--font-mono);
+}
+
+.il-trailing {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--il-ink);
+}
+
+.il-icon-btn {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--il-fill);
+  color: var(--il-ink);
+  cursor: pointer;
+  transition:
+    background-color var(--dur-color) var(--ease),
+    transform var(--dur-micro) var(--ease);
+}
+
+.il-icon-btn:active {
+  transform: scale(0.94);
+}
+
+@media (hover: hover) {
+  .il-icon-btn:hover {
+    background: var(--il-fill-hover);
+  }
+}
+
+.il-preview {
+  max-width: 180px;
+  overflow: hidden;
+  color: var(--il-ink-muted);
+  font: 400 13px/1.2 var(--font-body);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.il-fade-in {
+  animation: il-fade var(--dur-materialize) var(--ease) both;
+}
+
+.il-detail {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  overflow: hidden;
+  font: 500 13.5px/1.2 var(--font-display);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.il-pulse {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: il-breathe 1.4s var(--ease) infinite;
+}
+
+.il-done {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font: 600 13.5px/1 var(--font-display);
+  white-space: nowrap;
+}
+
+.il-done svg {
+  color: var(--accent);
+}
+
+.il-error {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  max-width: 290px;
+  font: 500 13px/1.2 var(--font-body);
+}
+
+.il-error svg {
+  flex: none;
+  color: var(--danger);
+}
+
+.il-error__text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Shimmer (transform-only glint) ────────────────────────────────────── */
+.il-shimmer {
+  position: relative;
+  display: inline-block;
+  font: 500 13.5px/1.2 var(--font-display);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.il-shimmer__base {
+  color: var(--il-ink-muted);
+}
+
+.il-shimmer__window {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 45%;
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, black 35%, black 65%, transparent);
+  animation: il-glint-window 2.4s var(--ease) infinite;
+}
+
+.il-shimmer__glint {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: max-content;
+  color: var(--il-ink);
+  animation: il-glint-text 2.4s var(--ease) infinite;
+}
+
+/* The window travels -100% → 222% of its own width (≈ −0.45 → 1 of the text); the text
+   counter-travels the same distance in its own units (45% → −100%), so letters stay put. */
+@keyframes il-glint-window {
+  0% {
+    transform: translateX(-100%);
+  }
+  70%,
+  100% {
+    transform: translateX(222%);
+  }
+}
+
+@keyframes il-glint-text {
+  0% {
+    transform: translateX(45%);
+  }
+  70%,
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes il-breathe {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes il-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ── Browser dev harness only ──────────────────────────────────────────── */
+.il-stage[data-dev='true'] {
+  background: var(--surface-4);
+}
+
+.il-dev {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  max-width: 460px;
+  padding: 0 12px;
+  pointer-events: auto;
+}
+
+.il-dev button {
+  padding: 6px 10px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--ghost-fill);
+  color: var(--ink-muted);
+  font: 500 11px/1 var(--font-mono);
+  cursor: pointer;
+}
+
+.il-dev button[data-active='true'] {
+  background: var(--accent);
+  color: var(--accent-ink);
+}

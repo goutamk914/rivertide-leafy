@@ -1,0 +1,190 @@
+/* /leafy: mood playground, ways to call Leafy, the pose grid. */
+
+/* ---------- /leafy ---------- */
+.leafy-intro {
+  padding-top: 112px;
+}
+
+.leafy-intro__grid {
+  display: grid;
+  gap: 40px;
+  align-items: center;
+}
+
+@media (min-width: 1000px) {
+  .leafy-intro__grid {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 56px;
+  }
+}
+
+.leafy-intro__lede {
+  margin-top: 24px;
+}
+
+.playground {
+  display: grid;
+  gap: 20px;
+  padding: clamp(16px, 2.4vw, 28px);
+}
+
+.playground__stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 28px 16px 20px;
+  border-radius: var(--r-card);
+  background: var(--bg);
+}
+
+.playground__caption {
+  min-height: 3.2em;
+  max-width: 34ch;
+  color: var(--ink-muted);
+  font-size: 16px;
+  text-align: center;
+}
+
+.playground__mood {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.playground__moods {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+@media (min-width: 560px) {
+  .playground__moods {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+.playground__mood-button,
+.poses__filter {
+  min-height: 44px;
+  padding-inline: 10px;
+  border: 0;
+  border-radius: var(--r-control);
+  background: var(--control);
+  color: var(--ink-muted);
+  font-family: var(--ff-display);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 160ms var(--ease),
+    color 160ms var(--ease);
+}
+
+.playground__mood-button[aria-pressed='true'],
+.poses__filter[aria-pressed='true'] {
+  background: var(--surface-4);
+  color: var(--ink);
+  box-shadow: var(--shadow-thumb);
+}
+
+@media (hover: hover) {
+  .playground__mood-button:hover,
+  .poses__filter:hover {
+    color: var(--ink);
+  }
+}
+
+.playground__mood-button:active,
+.poses__filter:active {
+  transform: scale(0.98);
+}
+
+.summon {
+  display: grid;
+  gap: 28px 32px;
+  margin: 40px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 760px) {
+  .summon {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.summon__item {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.summon__clap {
+  width: 92px;
+  height: auto;
+  color: var(--ink-muted);
+}
+
+.leafy-page__palette {
+  max-width: 760px;
+  margin-top: 56px;
+}
+
+.poses__lede {
+  margin-top: 20px;
+}
+
+.poses {
+  margin-top: 36px;
+}
+
+.poses__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.poses__filter {
+  padding-inline: 14px;
+}
+
+.poses__count {
+  margin-left: 4px;
+  color: var(--ink-muted);
+  font-family: var(--ff-mono);
+  font-size: 12px;
+}
+
+.poses__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+  gap: 8px;
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.poses__tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 8px 14px;
+  border-radius: var(--r-card);
+  background: var(--surface-1);
+  transition: background-color 200ms var(--ease);
+}
+
+@media (hover: hover) {
+  .poses__tile:hover {
+    background: var(--surface-2);
+  }
+}
+
+.poses__name {
+  color: var(--ink-muted);
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  text-align: center;
+}

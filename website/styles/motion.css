@@ -1,0 +1,210 @@
+/*
+ * Motion vocabulary, all from Code the Cure: reveal (10px / 700ms, once), unblur, materialize,
+ * floating objects that drift twice and rest, scroll-filled words, line doodles drawing in.
+ * Every keyframe has a reduced-motion branch at the bottom of this file.
+ */
+
+/* Reveal: hidden only when JS is running, so nothing is lost without it. */
+.js .rt-reveal {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 700ms var(--ease),
+    transform 700ms var(--ease);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.js .rt-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* A line of text arriving: soft focus to sharp. */
+.rt-unblur {
+  animation: rt-unblur 520ms var(--ease) both;
+}
+
+@keyframes rt-unblur {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+  }
+}
+
+/* A surface arriving: into focus and up to size together. */
+.rt-materialize {
+  animation: rt-materialize 320ms var(--ease) both;
+}
+
+@keyframes rt-materialize {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+    filter: blur(6px);
+  }
+}
+
+/* Slow float: drifts twice, then rests. A loop that never ends pulls the eye. */
+.rt-float {
+  animation: rt-float var(--d, 9s) ease-in-out var(--delay, 0s) 2 both;
+  transform: rotate(var(--r, 0deg));
+}
+
+@keyframes rt-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(var(--r, 0deg));
+  }
+  50% {
+    transform: translate3d(0, -12px, 0) rotate(calc(var(--r, 0deg) + 2deg));
+  }
+}
+
+/* Scroll-filled words: the fill is a hard stop that walks across each word. */
+.rt-fill-word {
+  display: inline-block;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+/* Film grain over the dark pages, fixed so it never repaints on scroll. */
+.rt-grain {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-grain);
+  pointer-events: none;
+  opacity: 0.32;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+  background-size: 240px 240px;
+}
+
+/* Listening waveform: bars breathe only while listening is live. */
+.rt-wave {
+  display: inline-flex;
+  align-items: center;
+  gap: 2.5px;
+  height: 18px;
+}
+
+.rt-wave > i {
+  display: block;
+  width: 3px;
+  height: 100%;
+  border-radius: 2px;
+  background: currentColor;
+  transform: scaleY(var(--h, 0.4));
+  animation: rt-wave 900ms var(--ease) var(--wd, 0ms) infinite alternate;
+}
+
+@keyframes rt-wave {
+  from {
+    transform: scaleY(0.22);
+  }
+  to {
+    transform: scaleY(var(--h, 0.9));
+  }
+}
+
+/* Three soft dots while Rivertide polishes. */
+.rt-dots {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.rt-dots > i {
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: rt-dot 1100ms ease-in-out calc(var(--i, 0) * 160ms) infinite;
+}
+
+@keyframes rt-dot {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+/* Typing caret in the hero's text field. */
+.rt-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin-left: 2px;
+  vertical-align: -0.16em;
+  border-radius: 1px;
+  background: var(--accent);
+  animation: rt-caret 1.05s steps(1, end) infinite;
+}
+
+@keyframes rt-caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Hand-drawn line doodles draw in once, when they scroll into view. */
+.rt-doodle path,
+.rt-doodle circle {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.js .rt-doodle:not(.is-drawn) path,
+.js .rt-doodle:not(.is-drawn) circle {
+  stroke-dashoffset: 1;
+}
+
+.js .rt-doodle.is-drawn path,
+.js .rt-doodle.is-drawn circle {
+  transition: stroke-dashoffset 1600ms var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 140ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .rt-reveal {
+    transform: none;
+    transition: opacity 150ms linear;
+  }
+
+  .rt-unblur,
+  .rt-materialize {
+    animation: rt-fade 150ms linear both;
+  }
+
+  .rt-float,
+  .rt-wave > i,
+  .rt-dots > i,
+  .rt-caret {
+    animation: none;
+  }
+
+  .js .rt-doodle:not(.is-drawn) path,
+  .js .rt-doodle:not(.is-drawn) circle {
+    stroke-dashoffset: 0;
+  }
+
+  .js .rt-doodle.is-drawn path,
+  .js .rt-doodle.is-drawn circle {
+    transition: none;
+  }
+
+  .rt-key,
+  .rt-btn,
+  .rt-disclosure__icon {
+    transition-duration: 0ms;
+  }
+}
+
+@keyframes rt-fade {
+  from {
+    opacity: 0;
+  }
+}

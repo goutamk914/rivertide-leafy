@@ -1,0 +1,337 @@
+/* Onboarding step content: welcome points, permissions, AI presets, provider keys, practice, shortcuts. */
+
+/* ---------- Welcome ---------- */
+.onb-points {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  list-style: none;
+}
+
+.onb-points__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--ink-muted);
+  line-height: 1.55;
+}
+
+/* ---------- Permissions ---------- */
+.onb-perms {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  list-style: none;
+}
+
+.onb-perm {
+  display: flex;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-6);
+  border-radius: var(--radius-card);
+  background: var(--surface-1);
+}
+
+.onb-perm__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.onb-perm__top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: 32px;
+}
+
+.onb-perm__title {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-weight: 650;
+}
+
+.onb-perm__why {
+  color: var(--ink-muted);
+}
+
+.onb-perm__note {
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+}
+
+.onb-perm__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+/* Status pill: icon + words, tone is only a second cue. */
+.onb-grant {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: var(--radius-pill);
+  background: var(--ghost-fill);
+  color: var(--ink-muted);
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.onb-grant--granted {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.onb-grant--blocked {
+  background: var(--warn-soft);
+  color: var(--warn);
+}
+
+.onb-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-card);
+  background: var(--bg-raised);
+  color: var(--ink-muted);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
+/* ---------- AI presets ---------- */
+.onb-presets {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.onb-preset {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  width: 100%;
+  padding: var(--space-5) var(--space-6);
+  border: 0;
+  border-radius: var(--radius-card);
+  background: var(--surface-1);
+  color: var(--ink);
+  text-align: left;
+  transition: background-color var(--dur-color) var(--ease), transform var(--dur-micro) var(--ease);
+}
+
+.onb-preset--checked {
+  background: var(--surface-3);
+}
+
+@media (hover: hover) {
+  .onb-preset:hover:not(.onb-preset--checked) {
+    background: var(--surface-2);
+  }
+}
+
+.onb-preset:active {
+  transform: scale(0.99);
+}
+
+.onb-preset__text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.onb-preset__title {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.onb-preset__body {
+  color: var(--ink-muted);
+  line-height: 1.55;
+}
+
+.onb-preset__needs {
+  display: block;
+  margin-top: 4px;
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+}
+
+.onb-preset__mark {
+  display: inline-flex;
+  flex-shrink: 0;
+  margin-top: 6px;
+  color: var(--ink-ghost);
+}
+
+.onb-preset--checked .onb-preset__mark {
+  color: var(--accent);
+}
+
+.onb-speech {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.onb-speech__label {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+/* ---------- Providers ---------- */
+.onb-providers {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.onb-provider {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-6);
+  border-radius: var(--radius-card);
+  background: var(--surface-1);
+}
+
+.onb-provider__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.onb-provider__text {
+  min-width: 0;
+}
+
+.onb-provider__title {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-weight: 650;
+}
+
+.onb-provider__purpose,
+.onb-provider__note {
+  color: var(--ink-muted);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+
+.onb-provider__form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.onb-provider__form .rt-field {
+  align-self: stretch;
+}
+
+.onb-provider__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.onb-provider__result {
+  min-height: 1lh;
+  margin-left: var(--space-2);
+}
+
+.onb-test {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.onb-test--ok {
+  color: var(--accent);
+}
+
+.onb-test--fail {
+  color: var(--ink-muted);
+}
+
+/* ---------- Try it ---------- */
+.onb-try {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.onb-try__status {
+  color: var(--ink-muted);
+}
+
+.onb-try__status-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  color: var(--ink-muted);
+}
+
+/* Reserved so the success line appearing never pushes the footer. */
+.onb-try__success {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 1lh;
+  color: var(--ink);
+}
+
+.onb-try__success svg {
+  color: var(--accent);
+}
+
+/* ---------- Shortcuts ---------- */
+.onb-shortcuts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.onb-shortcuts__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  border-radius: var(--radius-card);
+  background: var(--surface-1);
+  padding: var(--space-3) var(--space-6);
+}
+
+.onb-shortcuts__row {
+  display: grid;
+  grid-template-columns: minmax(120px, 160px) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-4);
+  min-height: 52px;
+}
+
+.onb-shortcuts__does {
+  margin: 0;
+  color: var(--ink-muted);
+}

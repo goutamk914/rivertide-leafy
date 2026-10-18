@@ -1,0 +1,78 @@
+appId: org.codethecure.rivertide
+productName: Rivertide
+copyright: Copyright © 2026 Code the Cure
+directories:
+  output: release
+  buildResources: resources
+files:
+  - dist/**/*
+  - dist-electron/**/*
+  - package.json
+extraResources:
+  - from: native/rivertide-helper
+    to: native/rivertide-helper
+  # "Hey Leafy" (ARCHITECTURE §3.13): the models (run `npm run fetch:wake-models` first; `build`
+  # does) and the onnxruntime native module the wake-word utility process requires at run time.
+  - from: resources/wake-word
+    to: wake-word
+    filter: ['*.onnx', 'moonshine-vocab.json', 'NOTICE.md']
+  - from: ../node_modules/onnxruntime-node
+    to: node_modules/onnxruntime-node
+    filter: ['package.json', 'dist/**/*', 'bin/napi-v6/${platform}/**/*']
+  - from: ../node_modules/onnxruntime-common
+    to: node_modules/onnxruntime-common
+    filter: ['package.json', 'dist/cjs/**/*']
+asarUnpack: []
+# Flipped on the Electron binary right before signing (electron-builder uses @electron/fuses).
+# The packaged app can't be turned into a plain Node runtime or a debug target, and it only runs
+# the code inside its own (integrity-checked) app.asar.
+electronFuses:
+  runAsNode: false
+  enableNodeCliInspectArguments: false
+  enableNodeOptionsEnvironmentVariable: false
+  enableCookieEncryption: true
+  enableEmbeddedAsarIntegrityValidation: true
+  onlyLoadAppFromAsar: true
+  grantFileProtocolExtraPrivileges: false
+mac:
+  category: public.app-category.productivity
+  minimumSystemVersion: "13.0"
+  # One universal (Apple Silicon + Intel) build. The DMG is what people download; the zip is what
+  # electron-updater (Squirrel.Mac) installs updates from, so both must be published.
+  target:
+    - target: dmg
+      arch: universal
+    - target: zip
+      arch: universal
+  artifactName: ${productName}-${version}-mac-${arch}.${ext}
+  hardenedRuntime: true
+  entitlements: resources/entitlements.mac.plist
+  entitlementsInherit: resources/entitlements.mac.plist
+  # The helper is already a universal (lipo) binary, identical in both per-arch builds, so
+  # @electron/universal copies it instead of merging. Signing walks Contents/ and signs it as a
+  # nested binary (hardened runtime, timestamp) before the app itself.
+  # onnxruntime-node only ships Apple-silicon binaries; both per-arch builds carry the same files,
+  # and on Intel Macs the app says "Hey Leafy" needs Apple silicon instead of loading them.
+  x64ArchFiles: Contents/Resources/{native/rivertide-helper,node_modules/onnxruntime-node/bin/**}
+  # Runs only when APPLE_API_KEY + APPLE_API_KEY_ID + APPLE_API_ISSUER are set (see README → Releases).
+  notarize: true
+  extendInfo:
+    NSMicrophoneUsageDescription: Rivertide listens while you hold fn (or after a double clap, or for “Hey Leafy” if you turn it on) so it can turn your speech into text.
+    NSAppleEventsUsageDescription: Rivertide uses Apple Events to change volume and appearance and to run your Shortcuts when you ask it to.
+dmg:
+  artifactName: ${productName}-${version}-mac-${arch}.${ext}
+win:
+  target: [nsis]
+linux:
+  target: [AppImage, deb]
+  category: Utility
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+publish:
+  provider: github
+  owner: CodeTheCure
+  repo: rivertide-electron
+  # Releases are created as drafts; a maintainer checks the notarized build and presses Publish.
+  # electron-updater and the website's "Download for Mac" only see published releases.
+  releaseType: draft

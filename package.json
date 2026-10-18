@@ -1,0 +1,20 @@
+{
+  "name": "rivertide-monorepo",
+  "private": true,
+  "description": "Rivertide by Code the Cure: voice-first desktop companion (app), marketing site (website) and shared packages.",
+  "workspaces": [
+    "packages/*",
+    "app",
+    "website"
+  ],
+  "scripts": {
+    "app:dev": "npm run dev -w app",
+    "app:check": "npm run check -w app",
+    "web:dev": "npm run dev -w website",
+    "web:build": "npm run build -w website",
+    "test": "npm run test --workspaces --if-present"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

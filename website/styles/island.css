@@ -1,0 +1,246 @@
+/* The navigation island and the pieces drawn inside it. The capsule itself comes from @rivertide/island. */
+
+.rt-site-header {
+  position: fixed;
+  top: calc(var(--island-top) + env(safe-area-inset-top, 0px));
+  left: 0;
+  right: 0;
+  z-index: var(--z-island);
+  pointer-events: none;
+}
+
+.rt-island__capsule {
+  box-shadow: var(--shadow-island);
+}
+
+/* One persistent button: covers the pill when closed, the card's header row when open. */
+.rt-island-trigger {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 36px pill, 48px hit area. */
+.rt-island-trigger::after {
+  content: '';
+  position: absolute;
+  inset: -6px -4px;
+}
+
+.rt-island-trigger[data-open='true'] {
+  inset: 0 0 auto;
+  height: 52px;
+  border-radius: 28px 28px 12px 12px;
+}
+
+.rt-island-trigger[data-open='true']::after {
+  inset: 0;
+}
+
+.rt-island-trigger:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.rt-island-trigger[data-open='true']:focus-visible {
+  outline-offset: -4px;
+}
+
+.rt-island-leafy {
+  flex: none;
+}
+
+.rt-island-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.rt-island-text {
+  overflow: hidden;
+  color: var(--island-ink);
+  font-family: var(--ff-display);
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.rt-island-text--muted {
+  color: var(--island-muted);
+}
+
+.rt-island-progress {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.rt-island-ring {
+  transform: rotate(-90deg);
+}
+
+.rt-island-percent {
+  min-width: 28px;
+  color: var(--island-muted);
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  line-height: 1;
+  text-align: right;
+}
+
+.rt-island-check {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--r-pill);
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.rt-wave {
+  color: var(--island-ink);
+}
+
+.rt-wave--ask {
+  color: var(--ask);
+}
+
+.rt-wave--accent {
+  color: var(--accent);
+}
+
+.rt-dots {
+  color: var(--island-muted);
+}
+
+/* Large result card (e.g. "Timer set"). */
+.rt-island-result {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 100%;
+  padding-inline: 22px;
+}
+
+.rt-island-result__text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rt-island-result__value {
+  color: var(--island-ink);
+  font-family: var(--ff-display);
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.rt-island-result__icon {
+  color: var(--accent);
+}
+
+/* ---------- Menu card ---------- */
+.rt-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+  padding: 8px;
+}
+
+.rt-menu__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+  padding-inline: 10px 12px;
+}
+
+.rt-menu__close {
+  color: var(--island-muted);
+}
+
+.rt-menu__links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rt-menu__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  height: 48px;
+  padding-inline: 14px 12px;
+  border-radius: 14px;
+  background: var(--island-row);
+  color: var(--island-ink);
+  font-family: var(--ff-display);
+  font-size: 14.5px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  transition: background-color 160ms var(--ease);
+}
+
+.rt-menu__link svg {
+  flex: none;
+  color: var(--island-muted);
+}
+
+.rt-menu__cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 46px;
+  margin-top: auto;
+  border-radius: var(--r-pill);
+  background: var(--island-ink);
+  color: var(--island);
+  font-family: var(--ff-display);
+  font-size: 14.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition:
+    transform 160ms var(--ease),
+    opacity 160ms var(--ease);
+}
+
+@media (hover: hover) {
+  .rt-menu__link:hover {
+    background: var(--island-row-hover);
+  }
+
+  .rt-menu__cta:hover {
+    opacity: 0.9;
+  }
+}
+
+.rt-menu__link:active,
+.rt-menu__cta:active {
+  transform: scale(0.98);
+}
+
+.rt-menu__link:focus-visible,
+.rt-menu__cta:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}

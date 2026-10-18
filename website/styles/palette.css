@@ -1,0 +1,107 @@
+/* The Leafy palette (⌘⇧Space), shown on the home page and /leafy. */
+
+/* ---------- Leafy palette ---------- */
+.palette {
+  overflow: hidden;
+  border-radius: var(--r-panel);
+  background: var(--surface-2);
+  box-shadow: var(--shadow-lift);
+}
+
+.palette__search {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--hairline);
+  color: var(--ink-muted);
+}
+
+.palette__query {
+  flex: 1;
+  min-width: 0;
+  color: var(--ink);
+  font-family: var(--ff-display);
+  font-size: clamp(16px, 1.6vw, 19px);
+  letter-spacing: -0.01em;
+}
+
+.palette__esc {
+  font-size: 11px;
+}
+
+.palette__results {
+  margin: 0;
+  padding: 8px 10px 4px;
+  list-style: none;
+}
+
+.palette__group {
+  padding: 12px 12px 6px;
+  color: var(--ink-muted);
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
+.palette__row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 12px;
+  border-radius: 14px;
+}
+
+.palette__row.is-active {
+  background: var(--surface-4);
+}
+
+.palette__icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: var(--control);
+  color: var(--ink-muted);
+}
+
+.palette__text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.palette__title {
+  color: var(--ink);
+  font-size: 15.5px;
+  line-height: 1.4;
+}
+
+.palette__meta {
+  color: var(--ink-muted);
+  font-size: 13.5px;
+}
+
+.palette__enter {
+  flex: none;
+  color: var(--ink-muted);
+}
+
+.palette__ask {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 6px 10px 10px;
+  padding: 12px;
+  border-radius: 14px;
+  background: var(--track);
+  color: var(--ink-muted);
+  font-size: 15px;
+}
+
+.palette__ask-query {
+  color: var(--ink);
+}

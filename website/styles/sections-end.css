@@ -1,0 +1,160 @@
+/* Home chapters 8-10: shortcuts, questions, closing. */
+
+/* ---------- Shortcuts sheet ---------- */
+.sheet {
+  display: grid;
+  gap: 28px 24px;
+  margin: 40px 0 0;
+  padding: clamp(20px, 3vw, 36px);
+  list-style: none;
+}
+
+@media (min-width: 640px) {
+  .sheet {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1040px) {
+  .sheet {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 40px 28px;
+  }
+}
+
+.sheet__keys {
+  min-height: 36px;
+}
+
+.sheet__keys .rt-kbd {
+  min-width: 36px;
+  height: 36px;
+  font-size: 13.5px;
+}
+
+.sheet__action {
+  margin-top: 16px;
+  color: var(--ink);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.sheet__detail {
+  margin-top: 6px;
+  color: var(--ink-muted);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+/* ---------- Questions ---------- */
+.faq {
+  display: grid;
+  gap: 32px;
+}
+
+@media (min-width: 960px) {
+  .faq {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: 64px;
+    align-items: start;
+  }
+
+  .faq__title {
+    position: sticky;
+    top: calc(var(--chrome-height) + 40px);
+  }
+}
+
+.faq__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ---------- Closing ---------- */
+.closing {
+  overflow: hidden;
+  text-align: center;
+}
+
+.closing__field {
+  position: absolute;
+  inset: 0;
+  display: none;
+  pointer-events: none;
+}
+
+@media (min-width: 1024px) {
+  .closing__field {
+    display: block;
+  }
+}
+
+.closing__artifact {
+  position: absolute;
+  transition: transform 700ms var(--ease-out);
+}
+
+.closing__key {
+  --key-size: 76px;
+  font-size: 15px;
+}
+
+.closing__key--wide {
+  width: 104px;
+}
+
+.closing__key--small {
+  --key-size: 62px;
+}
+
+.closing__key-fn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+}
+
+.closing__key-globe {
+  position: absolute;
+  bottom: 11px;
+  left: 11px;
+}
+
+.closing__content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.closing__title {
+  max-width: 24ch;
+}
+
+.closing__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 36px;
+}
+
+.closing__note {
+  margin-top: 18px;
+  color: var(--ink-muted);
+  font-size: 15px;
+}
+
+.closing__doodle {
+  width: min(320px, 80%);
+  height: auto;
+  margin-top: 48px;
+  color: var(--ink-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .closing__artifact {
+    transition: none;
+  }
+}

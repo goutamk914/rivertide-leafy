@@ -1,0 +1,196 @@
+/* App-level base styles shared by every window that uses the UI kit. Tokens live in tokens.css. */
+
+:root {
+  --control-h: 44px;
+  --control-h-sm: 36px;
+  --control-h-lg: 48px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+  --track-fill: rgb(255 255 255 / 0.05);
+  --thumb-fill: var(--surface-4);
+  --scrim: rgb(0 0 0 / 0.6);
+  --danger-soft: rgb(255 107 138 / 0.14);
+  --warn-soft: rgb(233 162 26 / 0.16);
+  --info-soft: rgb(124 196 255 / 0.14);
+  --ask-soft: rgb(255 138 61 / 0.15);
+  --on-danger: #2a0710;
+
+  /* Knowledge-graph families (blue, orange, aqua). Validated all-pairs with the dataviz checker
+     against --surface-1 in both themes; hubs and the legend carry labels, so colour is never alone. */
+  --viz-1: #3987e5;
+  --viz-2: #d95926;
+  --viz-3: #199e70;
+  --viz-series: var(--accent);
+  --viz-grid: rgb(255 255 255 / 0.07);
+  --viz-band: rgb(255 255 255 / 0.06);
+}
+
+:root[data-theme='light'] {
+  --track-fill: rgb(17 19 17 / 0.05);
+  --thumb-fill: var(--surface-1);
+  --scrim: rgb(17 19 17 / 0.35);
+  --danger: #c4234a;
+  --danger-soft: rgb(196 35 74 / 0.1);
+  --warn: #9a6400;
+  --warn-soft: rgb(154 100 0 / 0.12);
+  --info: #1d6fb8;
+  --info-soft: rgb(29 111 184 / 0.1);
+  --ask: #b5520f;
+  --ask-soft: rgb(181 82 15 / 0.1);
+  --on-danger: #ffffff;
+  --viz-1: #2a78d6;
+  --viz-2: #eb6834;
+  --viz-3: #1baf7a;
+  --viz-grid: rgb(17 19 17 / 0.08);
+  --viz-band: rgb(17 19 17 / 0.05);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-size: var(--text-md);
+  overflow: hidden;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled,
+[aria-disabled='true'] {
+  cursor: not-allowed;
+}
+
+a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--hairline-strong);
+  text-underline-offset: 3px;
+}
+
+p {
+  margin: 0;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.muted {
+  color: var(--ink-muted);
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.scroll-y {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+
+.scroll-y::-webkit-scrollbar {
+  width: 10px;
+}
+
+.scroll-y::-webkit-scrollbar-thumb {
+  background: var(--hairline-strong);
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+
+.rt-materialize {
+  animation: rt-materialize var(--dur-materialize) var(--ease) both;
+}
+
+.rt-unblur {
+  animation: rt-unblur 520ms var(--ease) both;
+}
+
+@keyframes rt-materialize {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+    filter: blur(6px);
+  }
+}
+
+@keyframes rt-unblur {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+  }
+}
+
+@keyframes rt-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes rt-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rt-pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rt-materialize,
+  .rt-unblur {
+    animation-name: rt-fade-in;
+  }
+}
+
+:root[data-reduce-motion='on'] .rt-materialize,
+:root[data-reduce-motion='on'] .rt-unblur {
+  animation-name: rt-fade-in;
+}

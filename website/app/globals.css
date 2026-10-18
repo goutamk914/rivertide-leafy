@@ -1,0 +1,43 @@
+/* Hallmark · macrostructure: chaptered scroll film (CTC sibling) · theme: studied-DNA (source: codethecure.org frontend + docs/DESIGN.md)
+ * nav: N-island (Dynamic Island disclosure) · footer: Ft-wordmark (CTC sign-off) · contrast: pass (40-41) · mobile: pass (34, 49-57)
+ * pre-emit critique: P5 H4 E4 S5 R4 V5
+ */
+@import 'tailwindcss';
+@import '../styles/tokens.css';
+@import '../styles/base.css' layer(base);
+@import '../styles/components.css' layer(components);
+@import '../styles/motion.css' layer(components);
+@import '../styles/island.css' layer(components);
+@import '../styles/hero.css' layer(components);
+@import '../styles/sections-story.css' layer(components);
+@import '../styles/palette.css' layer(components);
+@import '../styles/sections-facts.css' layer(components);
+@import '../styles/sections-end.css' layer(components);
+@import '../styles/pages.css' layer(components);
+@import '../styles/pages-docs.css' layer(components);
+
+/* Tokens as Tailwind utilities (bg-surface-1, text-ink-muted, font-display, ...). */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-raised: var(--bg-raised);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-surface-4: var(--surface-4);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-faint: var(--ink-faint);
+  --color-ink-ghost: var(--ink-ghost);
+  --color-hairline: var(--hairline);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-ask: var(--ask);
+  --color-control: var(--control);
+  --font-display: var(--ff-display);
+  --font-body: var(--ff-body);
+  --font-mono: var(--ff-mono);
+  --radius-card: var(--r-card);
+  --radius-panel: var(--r-panel);
+  --radius-control: var(--r-control);
+}

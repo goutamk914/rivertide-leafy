@@ -1,0 +1,353 @@
+/* Leafy palette window: one floating card inside a transparent window.
+   The 16 px shell padding is the shadow gutter (PALETTE_GUTTER in usePaletteResize.ts). */
+
+html,
+body,
+#root {
+  margin: 0;
+  background: transparent;
+}
+
+body {
+  overflow: hidden;
+  font-family: var(--font-body);
+}
+
+.pl-shell {
+  padding: 16px;
+}
+
+.pl-card {
+  overflow: hidden;
+  border-radius: var(--radius-panel);
+  background: var(--surface-1);
+  box-shadow:
+    0 0 0 1px var(--hairline),
+    var(--shadow-window);
+}
+
+/* ── Header ────────────────────────────────────────────────────────────── */
+.pl-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 76px;
+  padding: 10px 14px 10px 16px;
+}
+
+.pl-avatar {
+  flex: none;
+  width: 48px;
+  height: 56px;
+}
+
+.pl-input {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--ink);
+  caret-color: var(--accent);
+  font: 400 1.25rem/1.3 var(--font-display);
+  letter-spacing: -0.015em;
+}
+
+.pl-input::placeholder {
+  color: var(--ink-faint);
+}
+
+.pl-input[data-listening='true'] {
+  color: var(--ink-muted);
+}
+
+.pl-mic {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--ghost-fill);
+  color: var(--ink-muted);
+  cursor: pointer;
+  transition:
+    background-color var(--dur-color) var(--ease),
+    color var(--dur-color) var(--ease),
+    transform var(--dur-micro) var(--ease);
+}
+
+.pl-mic[data-listening='true'] {
+  width: 64px;
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.pl-mic:active {
+  transform: scale(0.98);
+}
+
+@media (hover: hover) {
+  .pl-mic:hover {
+    background: var(--ghost-fill-hover);
+    color: var(--ink);
+  }
+
+  .pl-mic[data-listening='true']:hover {
+    background: var(--accent-strong);
+    color: var(--accent-ink);
+  }
+}
+
+/* ── Body ──────────────────────────────────────────────────────────────── */
+.pl-body {
+  max-height: 440px;
+  overflow-y: auto;
+  border-top: 1px solid var(--hairline);
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+.pl-body[data-reserve='true'] {
+  min-height: 248px;
+}
+
+.pl-enter {
+  animation: pl-enter var(--dur-panel) var(--ease) both;
+}
+
+.pl-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.pl-results {
+  padding: 6px 8px 8px;
+}
+
+.pl-section__title {
+  padding: 12px 12px 6px;
+  font: 500 11px/1 var(--font-mono);
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+}
+
+.pl-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 6px 10px;
+  border-radius: var(--radius-control);
+  cursor: pointer;
+  transition: background-color var(--dur-micro) var(--ease);
+}
+
+.pl-row[data-active='true'] {
+  background: var(--surface-3);
+}
+
+.pl-row__icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: var(--ghost-fill);
+  color: var(--ink-muted);
+}
+
+.pl-row__icon img {
+  width: 28px;
+  height: 28px;
+}
+
+.pl-row__icon:has(img) {
+  background: transparent;
+}
+
+.pl-row__icon[data-kind='ask'] {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.pl-row__text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.pl-row__title,
+.pl-row__subtitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pl-row__title {
+  font: 500 0.94rem/1.35 var(--font-display);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.pl-row__subtitle {
+  font-size: 0.81rem;
+  line-height: 1.35;
+  color: var(--ink-faint);
+}
+
+.pl-row__hint {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.pl-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+
+.pl-kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 7px;
+  background: var(--surface-3);
+  box-shadow: inset 0 1px 0 var(--hairline);
+  color: var(--ink-muted);
+  font: 500 11px/1 var(--font-mono);
+  white-space: nowrap;
+}
+
+.pl-row[data-active='true'] .pl-kbd {
+  background: var(--surface-4);
+}
+
+.pl-kbd--quiet {
+  background: transparent;
+  box-shadow: none;
+  color: var(--ink-ghost);
+}
+
+.pl-kbd--on-accent {
+  background: color-mix(in srgb, var(--accent-ink) 14%, transparent);
+  box-shadow: none;
+  color: inherit;
+}
+
+/* ── Footer ────────────────────────────────────────────────────────────── */
+.pl-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 42px;
+  padding: 6px 14px 6px 18px;
+  border-top: 1px solid var(--hairline);
+}
+
+.pl-footer__notice {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  font-size: 0.81rem;
+  color: var(--ink-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pl-footer__hints {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 14px;
+}
+
+.pl-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 32px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--ink-muted);
+  font: 500 12.5px/1 var(--font-body);
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  .pl-link:hover {
+    background: var(--ghost-fill);
+    color: var(--ink);
+  }
+}
+
+@keyframes pl-enter {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes pl-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pl-pulse {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes pl-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-reduce-motion='off']) .pl-enter {
+    animation-name: pl-fade;
+  }
+}
+
+:root[data-reduce-motion='on'] .pl-enter {
+  animation-name: pl-fade;
+}

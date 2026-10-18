@@ -1,0 +1,237 @@
+/* Onboarding frame: full window, drag strip, centered column, progress, step header and footer. */
+
+.onb {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+/* Room for the macOS traffic lights; the whole strip drags the window. */
+.onb__strip {
+  height: 52px;
+  flex-shrink: 0;
+}
+
+.onb__scroll {
+  flex: 1;
+  min-height: 0;
+  outline: none;
+}
+
+.onb__column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  width: 100%;
+  max-width: 640px;
+  min-height: 100%;
+  margin: 0 auto;
+  padding: var(--space-2) var(--space-6) var(--space-10);
+}
+
+/* ---------- Progress ---------- */
+.onb-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.onb-progress__label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.onb-progress__track {
+  position: relative;
+  height: 4px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--track-fill);
+}
+
+.onb-progress__fill {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--accent);
+  transform-origin: left center;
+  transition: transform var(--dur-panel) var(--ease);
+}
+
+/* ---------- Step ---------- */
+.onb-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  animation: onb-reveal 700ms var(--ease) both;
+}
+
+@keyframes onb-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@keyframes onb-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .onb-step {
+    animation: onb-fade 150ms linear both;
+  }
+  .onb-progress__fill {
+    transition: none;
+  }
+}
+
+:root[data-reduce-motion='on'] .onb-step {
+  animation: onb-fade 150ms linear both;
+}
+
+:root[data-reduce-motion='on'] .onb-progress__fill {
+  transition: none;
+}
+
+/* ---------- Header ---------- */
+.onb-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding-top: var(--space-6);
+}
+
+.onb-head__leading {
+  display: flex;
+  margin-bottom: var(--space-2);
+}
+
+.onb-head__title {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+.onb-head__title:focus {
+  outline: none;
+}
+
+.onb-head__title:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.onb-head__beat {
+  display: block;
+  color: var(--ink-faint);
+}
+
+.onb-head__lede {
+  max-width: 62ch;
+  font-size: var(--text-md);
+  line-height: 1.65;
+  color: var(--ink-muted);
+}
+
+/* ---------- Footer ---------- */
+.onb-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-top: auto;
+  padding-top: var(--space-6);
+}
+
+.onb-foot__note {
+  flex: 1 1 240px;
+  min-width: 0;
+}
+
+.onb-foot__hint {
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+}
+
+.onb-foot__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-left: auto;
+}
+
+/* ---------- Shared pieces ---------- */
+.onb-chip {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: var(--ghost-fill);
+  color: var(--ink);
+}
+
+.onb-card {
+  border-radius: var(--radius-card);
+  background: var(--surface-1);
+  padding: var(--space-4) var(--space-6);
+}
+
+.onb-section-title {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.onb-section-lede {
+  margin-top: calc(var(--space-2) * -1);
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+}
+
+.onb-error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+  color: var(--danger);
+}
+
+.onb-error__icon {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.onb-retry {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+@media (max-width: 560px) {
+  .onb__column {
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+  .onb-head__title {
+    font-size: var(--text-2xl);
+  }
+}

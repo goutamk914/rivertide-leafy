@@ -1,0 +1,391 @@
+/* Home chapters 5-7: remembers, foggy days, privacy (paper). */
+
+/* ---------- Remembers: knowledge graph ---------- */
+.remembers__lede {
+  margin-top: 20px;
+}
+
+.graph {
+  margin-top: 40px;
+}
+
+.graph__canvas {
+  position: relative;
+  aspect-ratio: 0.62;
+  border-radius: var(--r-panel);
+  background: var(--surface-1);
+}
+
+@media (min-width: 760px) {
+  .graph__canvas {
+    aspect-ratio: 2.35;
+  }
+}
+
+.graph__links {
+  position: absolute;
+  inset: 8% 6%;
+  width: 88%;
+  height: 84%;
+  color: var(--ink-faint);
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+.graph__links--wide {
+  display: none;
+}
+
+@media (min-width: 760px) {
+  .graph__links--wide {
+    display: block;
+  }
+
+  .graph__links--narrow {
+    display: none;
+  }
+}
+
+.graph__nodes {
+  position: absolute;
+  inset: 8% 6%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.graph__node {
+  position: absolute;
+  left: var(--x-sm);
+  top: var(--y-sm);
+  display: flex;
+  flex-direction: column;
+  max-width: 44%;
+  padding: 9px 12px;
+  border-radius: 14px;
+  background: var(--surface-3);
+  translate: -50% -50%;
+}
+
+@media (min-width: 760px) {
+  .graph__node {
+    left: var(--x);
+    top: var(--y);
+    max-width: 28%;
+  }
+}
+
+.graph__node--you {
+  flex-direction: row;
+  align-items: center;
+  padding: 12px 20px;
+  border-radius: var(--r-pill);
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.graph__kind {
+  color: var(--ink-muted);
+  font-family: var(--ff-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+}
+
+.graph__name {
+  color: var(--ink);
+  font-family: var(--ff-display);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.graph__node--you .graph__name {
+  color: var(--accent-ink);
+}
+
+.graph__note {
+  color: var(--ink-muted);
+  font-size: 13.5px;
+  line-height: 1.35;
+}
+
+.graph__caption {
+  margin-top: 14px;
+  color: var(--ink-muted);
+  font-size: 15px;
+}
+
+.remembers__details {
+  display: grid;
+  gap: 28px;
+  margin-top: clamp(48px, 6vw, 72px);
+}
+
+.remembers__detail {
+  display: grid;
+  gap: 8px;
+}
+
+@media (min-width: 760px) {
+  .remembers__detail {
+    grid-template-columns: minmax(0, 0.42fr) minmax(0, 1fr);
+    gap: 32px;
+    padding-top: 28px;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .remembers__detail:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+}
+
+/* ---------- Foggy days: pace chart ---------- */
+.foggy {
+  display: grid;
+  gap: 40px;
+  align-items: center;
+}
+
+@media (min-width: 960px) {
+  .foggy {
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    gap: 64px;
+  }
+}
+
+.foggy__chart {
+  padding: clamp(18px, 2.4vw, 28px);
+}
+
+.foggy__body {
+  margin-top: 18px;
+}
+
+.pace__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+  font-family: var(--ff-display);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.pace__example {
+  padding: 3px 8px;
+  border-radius: var(--r-pill);
+  background: var(--control);
+  color: var(--ink-muted);
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.pace__frame {
+  position: relative;
+  margin-top: 14px;
+}
+
+.pace__svg {
+  display: block;
+  max-width: 100%;
+  overflow: visible;
+  border-radius: 8px;
+  touch-action: pan-y;
+}
+
+.pace__svg:focus-visible {
+  outline-offset: 6px;
+}
+
+.pace__tick,
+.pace__band-label {
+  fill: var(--ink-muted);
+  font-family: var(--ff-mono);
+  font-size: 11px;
+}
+
+.pace__value {
+  fill: var(--ink);
+  font-family: var(--ff-display);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.pace__tooltip {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 150px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--surface-4);
+  box-shadow: var(--shadow-lift);
+  pointer-events: none;
+  translate: -50% 0;
+}
+
+.pace__tooltip-value {
+  color: var(--ink);
+  font-family: var(--ff-display);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.pace__tooltip-label {
+  color: var(--ink-muted);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.pace__table {
+  margin-top: 16px;
+}
+
+.pace__table summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--ink-muted);
+  font-size: 15px;
+  text-decoration: underline;
+  text-decoration-color: var(--ink-ghost);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.pace__table table {
+  width: 100%;
+  margin-top: 8px;
+  border-collapse: collapse;
+  font-size: 14.5px;
+}
+
+.pace__table th,
+.pace__table td {
+  padding: 8px 6px;
+  border-bottom: 1px solid var(--hairline);
+  color: var(--ink-muted);
+  text-align: left;
+  font-weight: 400;
+}
+
+.pace__table thead th {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ---------- Privacy (paper chapter) ---------- */
+/* The one light chapter is a sheet laid on the dark page: rounded, full width, deliberate. */
+.privacy-chapter {
+  border-radius: var(--r-panel);
+}
+
+.privacy-chapter__lede {
+  margin-top: 20px;
+}
+
+.privacy-chapter__table {
+  margin-top: 40px;
+}
+
+.privacy-chapter__more {
+  margin-top: 28px;
+  font-size: 17px;
+}
+
+.flows {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.flows thead th {
+  padding: 0 16px 14px 0;
+  color: var(--ink-muted);
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+
+.flows tbody tr {
+  border-top: 1px solid var(--hairline);
+}
+
+.flows tbody th,
+.flows td {
+  padding: 18px 16px 18px 0;
+  vertical-align: top;
+}
+
+.flows tbody th {
+  width: 24%;
+  color: var(--ink);
+  font-family: var(--ff-display);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.flows__where {
+  color: var(--ink);
+}
+
+.flows__local {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+  padding: 3px 10px 3px 8px;
+  border-radius: var(--r-pill);
+  background: var(--accent-soft);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.flows__note {
+  width: 34%;
+  color: var(--ink-muted);
+  font-size: 15.5px;
+}
+
+@media (max-width: 760px) {
+  .flows thead {
+    display: none;
+  }
+
+  .flows tbody tr {
+    display: grid;
+    gap: 6px;
+    padding-block: 18px;
+  }
+
+  .flows tbody th,
+  .flows td {
+    width: auto;
+    padding: 0;
+  }
+}
+
+/* Non-scaling strokes ignore pathLength in some engines, so the links draw in with a long dash instead. */
+.graph__links.rt-doodle path {
+  stroke-dasharray: 2000;
+}
+
+.js .graph__links.rt-doodle:not(.is-drawn) path {
+  stroke-dashoffset: 2000;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .graph__links.rt-doodle:not(.is-drawn) path {
+    stroke-dashoffset: 0;
+  }
+}

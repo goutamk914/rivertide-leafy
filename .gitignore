@@ -1,0 +1,19 @@
+node_modules/
+dist/
+dist-electron/
+out/
+release/
+.next/
+coverage/
+*.log
+.DS_Store
+reference/
+app/native/rivertide-helper
+app/native/build/
+.env
+.env.*
+!.env.example
+# "Hey Leafy" third-party models: fetched with pinned checksums by app/scripts/fetch-wake-models.mjs
+app/resources/wake-word/melspectrogram.onnx
+app/resources/wake-word/embedding_model.onnx
+app/resources/wake-word/moonshine-*

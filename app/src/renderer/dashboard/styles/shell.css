@@ -1,0 +1,324 @@
+/* Dashboard shell: sidebar, title bar, page frame. */
+
+.app {
+  display: grid;
+  grid-template-columns: var(--sidebar-w, 232px) minmax(0, 1fr);
+  height: 100%;
+  background: var(--bg);
+}
+
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 50%;
+  z-index: 300;
+  padding: 10px 16px;
+  border-radius: var(--radius-pill);
+  background: var(--ink);
+  color: var(--bg);
+  font-weight: 700;
+  transform: translate(-50%, -150%);
+}
+
+.skip-link:focus-visible {
+  transform: translate(-50%, 0);
+}
+
+/* ---------- Sidebar ---------- */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0 var(--space-3) var(--space-4);
+  background: var(--bg-raised);
+}
+
+.drag-region {
+  -webkit-app-region: drag;
+  app-region: drag;
+}
+
+.drag-region button,
+.drag-region a,
+.drag-region input,
+.no-drag {
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
+}
+
+/* Room for the macOS traffic lights (hiddenInset title bar). */
+.sidebar__drag {
+  height: 52px;
+  flex-shrink: 0;
+}
+
+.sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0 var(--space-2) var(--space-5);
+}
+
+.sidebar__brand-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.sidebar__name {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.sidebar__status {
+  font-size: var(--text-xs);
+  color: var(--ink-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  list-style: none;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--control-h);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-control);
+  color: var(--ink-muted);
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color var(--dur-color) var(--ease), color var(--dur-color) var(--ease);
+}
+
+@media (hover: hover) {
+  .nav-link:hover {
+    background: var(--ghost-fill);
+    color: var(--ink);
+  }
+}
+
+.nav-link:active {
+  background: var(--ghost-fill-hover);
+}
+
+.nav-link[aria-current='page'] {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+.nav-link[aria-current='page'] svg {
+  color: var(--accent);
+}
+
+.sidebar__hint {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: auto;
+  padding: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+}
+
+/* ---------- Main column ---------- */
+.main-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  height: 52px;
+  flex-shrink: 0;
+  padding: 0 var(--space-6);
+}
+
+.voice-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 36px;
+  padding: 0 6px 0 14px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  font-size: var(--text-sm);
+}
+
+.voice-pill__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: rt-pulse 1.4s ease-in-out infinite;
+}
+
+.voice-pill--ask .voice-pill__dot {
+  background: var(--ask);
+}
+
+.voice-pill--error .voice-pill__dot {
+  background: var(--danger);
+  animation: none;
+}
+
+.main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  outline: none;
+}
+
+.calm-note {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0 var(--space-8) var(--space-4);
+  padding: 10px 10px 10px 16px;
+  border-radius: 14px;
+  background: var(--accent-soft);
+  color: var(--ink);
+  font-size: var(--text-sm);
+}
+
+.calm-note p {
+  flex: 1;
+}
+
+/* ---------- Page frame ---------- */
+.page {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.page--scroll {
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.page__inner {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 var(--space-8) var(--space-10);
+}
+
+.page--split .page__inner {
+  max-width: none;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: var(--space-6);
+}
+
+.page__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-2) 0 var(--space-6);
+}
+
+.page__title {
+  font-size: var(--text-3xl);
+  font-weight: 650;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+}
+
+.page__title:focus {
+  outline: none;
+}
+
+.page__title:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.page__description {
+  margin-top: var(--space-2);
+  max-width: 62ch;
+  color: var(--ink-muted);
+}
+
+.page__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.page-error {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-card);
+  background: var(--danger-soft);
+  color: var(--ink);
+}
+
+.page-error p {
+  flex: 1;
+}
+
+/* Split panes (list + detail) share one recipe. */
+.split {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
+  gap: var(--space-4);
+}
+
+.split__list,
+.split__detail {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-card);
+  background: var(--surface-1);
+}
+
+.split__detail {
+  overflow-y: auto;
+}
+
+.boot {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  gap: var(--space-4);
+  text-align: center;
+}
+
+@media (max-width: 1000px) {
+  .app {
+    --sidebar-w: 200px;
+  }
+  .page__inner {
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
+  }
+}

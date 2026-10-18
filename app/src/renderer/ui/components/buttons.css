@@ -1,0 +1,184 @@
+/* UI kit: buttons, icon buttons and the inline spinner. Hover inside @media (hover: hover);
+   :focus-visible comes from tokens.css; :active presses in; disabled dims; loading uses aria-busy. */
+
+/* ---------- Button ---------- */
+.rt-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  height: var(--control-h);
+  padding: 0 var(--space-5);
+  border: 0;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  user-select: none;
+  transition:
+    background-color var(--dur-color) var(--ease),
+    opacity var(--dur-color) var(--ease),
+    transform var(--dur-micro) var(--ease);
+}
+
+.rt-btn--sm {
+  height: var(--control-h-sm);
+  padding: 0 var(--space-4);
+}
+
+/* Small buttons keep a 44px hit area. */
+.rt-btn--sm::after,
+.rt-icon-btn--sm::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+}
+
+.rt-btn--lg {
+  height: var(--control-h-lg);
+  padding: 0 var(--space-6);
+  font-size: var(--text-md);
+}
+
+.rt-btn--block {
+  width: 100%;
+}
+
+.rt-btn--primary {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.rt-btn--accent {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.rt-btn--ghost {
+  background: var(--ghost-fill);
+  color: var(--ink);
+}
+
+.rt-btn--quiet {
+  background: transparent;
+  color: var(--ink-muted);
+}
+
+.rt-btn--danger {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.rt-btn--danger-solid {
+  background: var(--danger);
+  color: var(--on-danger);
+}
+
+@media (hover: hover) {
+  .rt-btn--primary:hover:not(:disabled):not([aria-busy='true']) {
+    background: color-mix(in srgb, var(--ink) 88%, var(--bg));
+  }
+  .rt-btn--accent:hover:not(:disabled):not([aria-busy='true']) {
+    background: var(--accent-strong);
+  }
+  .rt-btn--ghost:hover:not(:disabled):not([aria-busy='true']),
+  .rt-btn--quiet:hover:not(:disabled):not([aria-busy='true']) {
+    background: var(--ghost-fill-hover);
+    color: var(--ink);
+  }
+  .rt-btn--danger:hover:not(:disabled):not([aria-busy='true']) {
+    background: color-mix(in srgb, var(--danger) 24%, transparent);
+  }
+  .rt-btn--danger-solid:hover:not(:disabled):not([aria-busy='true']) {
+    background: color-mix(in srgb, var(--danger) 86%, var(--ink));
+  }
+}
+
+.rt-btn:active:not(:disabled):not([aria-busy='true']),
+.rt-icon-btn:active:not(:disabled) {
+  transform: scale(0.98);
+  transition-duration: 0ms, 0ms, 100ms;
+}
+
+.rt-btn:disabled,
+.rt-icon-btn:disabled {
+  opacity: 0.45;
+}
+
+.rt-btn[aria-busy='true'] {
+  cursor: progress;
+}
+
+.rt-btn__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.rt-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  animation: rt-spin 800ms linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rt-spinner {
+    animation: rt-pulse 1.2s ease-in-out infinite;
+    border-right-color: currentColor;
+    opacity: 0.6;
+  }
+}
+
+/* ---------- Icon button ---------- */
+.rt-icon-btn {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: var(--control-h);
+  height: var(--control-h);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--ghost-fill);
+  color: var(--ink);
+  transition:
+    background-color var(--dur-color) var(--ease),
+    transform var(--dur-micro) var(--ease);
+}
+
+.rt-icon-btn--sm {
+  width: var(--control-h-sm);
+  height: var(--control-h-sm);
+}
+
+.rt-icon-btn--plain {
+  background: transparent;
+  color: var(--ink-muted);
+}
+
+.rt-icon-btn--danger {
+  color: var(--danger);
+}
+
+.rt-icon-btn[aria-pressed='true'] {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+@media (hover: hover) {
+  .rt-icon-btn:hover:not(:disabled) {
+    background: var(--ghost-fill-hover);
+    color: var(--ink);
+  }
+  .rt-icon-btn--danger:hover:not(:disabled) {
+    background: var(--danger-soft);
+    color: var(--danger);
+  }
+}
+

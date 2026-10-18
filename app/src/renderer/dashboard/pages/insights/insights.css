@@ -1,0 +1,279 @@
+/* Insights page. Charts use --viz-* for marks and grid, ink tokens for every piece of text. */
+
+/* ---------- Layout ---------- */
+.ins-filters {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-8);
+}
+
+.ins-sections {
+  display: grid;
+  gap: var(--space-10);
+}
+
+.ins-section {
+  min-width: 0;
+}
+
+.ins-section > .page-error {
+  margin-bottom: var(--space-4);
+}
+
+.ins-stack {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+  transition: opacity var(--dur-color) var(--ease);
+}
+
+/* Refetch keeps the previous render on screen, dimmed: no skeleton flash, no layout jump. */
+.ins-refreshing {
+  opacity: 0.55;
+}
+
+.ins-usage-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(240px, 1fr);
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.ins-multiples {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-4);
+}
+
+@media (max-width: 1100px) {
+  .ins-usage-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.ins-muted {
+  color: var(--ink-muted);
+}
+
+/* ---------- Stat tiles ---------- */
+.ins-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.ins-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ins-tile dd {
+  margin: 0;
+}
+
+.ins-tile__label {
+  color: var(--ink-muted);
+  font-size: var(--text-sm);
+}
+
+/* Big standalone figures keep proportional digits; tabular is for columns. */
+.ins-tile__value {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  font-variant-numeric: proportional-nums;
+}
+
+.ins-tile__caption {
+  color: var(--ink-muted);
+  font-size: var(--text-sm);
+}
+
+.ins-tile__split ul {
+  display: grid;
+  gap: 2px;
+  margin-top: var(--space-1);
+  list-style: none;
+}
+
+.ins-tile__split li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+}
+
+.ins-tile__split li span:last-child {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ---------- Figures ---------- */
+.ins-figure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: 0;
+}
+
+.ins-figure__head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ins-figure__title {
+  font-size: var(--text-md);
+  font-weight: 650;
+  letter-spacing: -0.015em;
+}
+
+.ins-figure__text {
+  max-width: 62ch;
+  color: var(--ink-muted);
+  font-size: var(--text-sm);
+}
+
+.ins-chart-message {
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+  color: var(--ink-muted);
+  text-align: center;
+}
+
+.ins-legend {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--ink-muted);
+  font-size: var(--text-xs);
+}
+
+.ins-legend__swatch {
+  width: 16px;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--viz-band);
+}
+
+/* ---------- Tables ---------- */
+.ins-table-wrap {
+  overflow-x: auto;
+}
+
+.ins-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.ins-table th,
+.ins-table td {
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.ins-table td {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.ins-table thead th {
+  color: var(--ink-muted);
+  font-weight: 600;
+}
+
+.ins-table thead th:not(:first-child) {
+  text-align: right;
+}
+
+.ins-table tbody th {
+  font-weight: 400;
+}
+
+.ins-table tbody tr {
+  box-shadow: inset 0 1px 0 var(--hairline);
+}
+
+/* ---------- Bar list ---------- */
+.ins-bars {
+  display: grid;
+  gap: var(--space-4);
+  list-style: none;
+}
+
+.ins-bars__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 6px var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.ins-bars__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ins-bars__value {
+  font-weight: 600;
+}
+
+.ins-bars__track {
+  grid-column: 1 / -1;
+  height: 8px;
+}
+
+/* Square at the baseline, 4px rounded at the data end. */
+.ins-bars__bar {
+  display: block;
+  height: 100%;
+  min-width: 2px;
+  border-radius: 0 4px 4px 0;
+  background: var(--viz-series);
+}
+
+/* ---------- Speech dynamics ---------- */
+.ins-reading__text {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  text-wrap: balance;
+}
+
+.ins-notes {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.ins-notes ul {
+  display: grid;
+  gap: var(--space-2);
+  padding-left: 1.2em;
+  color: var(--ink-muted);
+}
+
+.ins-disclaimer {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-control);
+  background: var(--ghost-fill);
+  color: var(--ink-muted);
+  font-size: var(--text-sm);
+}
+
+.ins-disclaimer svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
