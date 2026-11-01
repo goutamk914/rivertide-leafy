@@ -8,7 +8,8 @@ import { parseRoute } from '../../../../src/renderer/lib/router';
 import type { MockBridge } from '../../../../src/renderer/lib/mock-bridge';
 import { renderUi, setupBridge } from '../helpers';
 
-function renderOnboarding(path = '/onboarding') {
+/** Deep-linking to the first step skips the intro curtain, which only plays from bare `/onboarding`. */
+function renderOnboarding(path = '/onboarding/welcome') {
   return renderUi(<OnboardingPage route={parseRoute(path)} />);
 }
 

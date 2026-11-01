@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "app:dev": "npm run dev -w app",
+    "app:reset-onboarding": "node -e \"const fs=require('fs');const p=require('os').homedir()+'/Library/Application Support/Rivertide Dev/data/settings.json';if(!fs.existsSync(p)){console.log('No settings file yet — onboarding already shows first.');process.exit(0)}const j=JSON.parse(fs.readFileSync(p,'utf8'));j.onboarded=false;fs.writeFileSync(p,JSON.stringify(j,null,2));console.log('Onboarding reset. Run npm run app:dev.')\"",
     "app:check": "npm run check -w app",
     "web:dev": "npm run dev -w website",
     "web:build": "npm run build -w website",

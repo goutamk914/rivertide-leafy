@@ -30,7 +30,11 @@ export function isElectron(): boolean {
   return typeof window !== 'undefined' && window.rivertide !== undefined;
 }
 
-export function invoke<C extends InvokeChannel>(channel: C, request: InvokeRequest<C>): Promise<InvokeResult<C>> {
+/** The mock bridge's fixed clock when one is installed, else the real time. */
+export function bridgeNow(): Date {
+  const clock = (mockBridge as { now?: () => Date } | null)?.now;
+  return clock ? clock() : new Date();
+}export function invoke<C extends InvokeChannel>(channel: C, request: InvokeRequest<C>): Promise<InvokeResult<C>> {
   return bridge().invoke(channel, request);
 }
 

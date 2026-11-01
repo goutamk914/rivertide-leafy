@@ -71,7 +71,7 @@ function Shell({ route, useFn }: { readonly route: Route; readonly useFn: boolea
       }}>
         Skip to content
       </a>
-      <Sidebar route={route} voice={voice} useFn={useFn} />
+      <Sidebar route={route} useFn={useFn} />
       <div className="main-col">
         <TitleBar voice={voice} />
         <main id="main" className="main" tabIndex={-1}>
