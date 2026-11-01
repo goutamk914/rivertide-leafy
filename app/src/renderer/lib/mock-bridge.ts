@@ -23,6 +23,8 @@ export interface MockBridgeOptions {
 }
 
 export interface MockBridge extends RivertideBridge {
+  /** The clock the seeded state was built against (tests fix this; dev uses real time). */
+  readonly now: () => Date;
   readonly getState: () => MockState;
   readonly setState: (update: (state: MockState) => MockState) => void;
   /** Pushes an event to listeners, as main would. */
@@ -90,6 +92,7 @@ export function createMockBridge(options: MockBridgeOptions = {}): MockBridge {
 
   return {
     platform: 'darwin',
+    now,
     invoke,
     send: () => undefined,
     on: (channel, listener) => {

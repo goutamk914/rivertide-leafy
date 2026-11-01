@@ -29,7 +29,7 @@ export function createDashboard(env: WindowEnv, isQuitting: () => boolean, onFir
       backgroundColor: BACKGROUND,
       titleBarStyle: env.isMac ? 'hiddenInset' : 'default',
       autoHideMenuBar: !env.isMac,
-    }, { spellcheck: true });
+    }, { spellcheck: true, autoplayPolicy: 'no-user-gesture-required' });
     created.once('ready-to-show', () => {
       if (!created.isDestroyed()) created.show();
     });

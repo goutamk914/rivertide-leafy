@@ -1,29 +1,23 @@
-import { LeafySprite } from '@rivertide/leafy';
-import type { VoiceSnapshot } from '@shared/types';
 import type { Route } from '../../lib/router';
 import { ICON_STROKE, Kbd } from '../../ui/components';
 import { usePresentation } from '../app-context';
-import { moodForPhase, phaseLabel } from '../hooks/useVoice';
+import rivertideLogo from '../../assets/onboarding/rivertide-logo.png';
 import { visibleNav } from './nav';
 
 export interface SidebarProps {
   readonly route: Route;
-  readonly voice: VoiceSnapshot | null;
   readonly useFn: boolean;
 }
 
-export function Sidebar({ route, voice, useFn }: SidebarProps) {
-  const { calm, reduceMotion } = usePresentation();
-  const phase = voice?.phase ?? 'idle';
-  const status = phase === 'idle' ? 'Here when you need me' : phaseLabel(phase);
+export function Sidebar({ route, useFn }: SidebarProps) {
+  const { calm } = usePresentation();
   return (
     <aside className="sidebar">
       <div className="sidebar__drag drag-region" />
       <div className="sidebar__brand">
-        <LeafySprite mood={moodForPhase(phase)} scale={2} reducedMotion={reduceMotion} decorative />
+        <img src={rivertideLogo} alt="" className="sidebar__logo" />
         <div className="sidebar__brand-text">
           <span className="sidebar__name">Rivertide</span>
-          <span className="sidebar__status" aria-live="polite">{status}</span>
         </div>
       </div>
       <nav aria-label="Main">

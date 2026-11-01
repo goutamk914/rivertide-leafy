@@ -59,6 +59,14 @@
   padding: 0 var(--space-2) var(--space-5);
 }
 
+.sidebar__logo {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
 .sidebar__brand-text {
   display: flex;
   flex-direction: column;
@@ -70,14 +78,6 @@
   font-size: var(--text-lg);
   font-weight: 700;
   letter-spacing: -0.03em;
-}
-
-.sidebar__status {
-  font-size: var(--text-xs);
-  color: var(--ink-muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .sidebar__nav {

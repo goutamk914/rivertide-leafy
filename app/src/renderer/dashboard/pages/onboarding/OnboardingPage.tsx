@@ -9,6 +9,9 @@ import type { PageComponentProps } from '../../shell/Page';
 import { AiStep } from './AiStep';
 import { DoneStep } from './DoneStep';
 import { LeafyStep } from './LeafyStep';
+import { OnboardingBrand } from './OnboardingBrand';
+import { OnboardingHero } from './OnboardingHero';
+import { OnboardingMusic } from './OnboardingMusic';
 import { PermissionsStep } from './PermissionsStep';
 import { StepNavProvider, type StepNav } from './step-frame';
 import {
@@ -19,6 +22,7 @@ import { TryStep } from './TryStep';
 import { WelcomeStep } from './WelcomeStep';
 import './onboarding.css';
 import './onboarding-steps.css';
+import './onboarding-hero.css';
 
 const STEP_COMPONENTS: Readonly<Record<StepId, ComponentType>> = {
   welcome: WelcomeStep,
@@ -52,6 +56,8 @@ function Progress({ step }: { readonly step: StepId }) {
 export function OnboardingPage({ route }: PageComponentProps) {
   const [step, setStep] = useState<StepId>(() => stepFromSection(route.section));
   const [moved, setMoved] = useState(false);
+  /** The clouds-and-carousel curtain plays once, before the first step. */
+  const [intro, setIntro] = useState(() => route.section === null);
 
   const goTo = useCallback((target: StepId | null) => {
     if (!target) return;
@@ -67,10 +73,23 @@ export function OnboardingPage({ route }: PageComponentProps) {
     [step, moved, goTo],
   );
 
+  if (intro) {
+    return (
+      <div className="onb onb--intro">
+        <div className="onb__strip onb__strip--overlay drag-region" />
+        <OnboardingBrand />
+        <OnboardingMusic />
+        <OnboardingHero onEnter={() => setIntro(false)} />
+      </div>
+    );
+  }
+
   const StepComponent = STEP_COMPONENTS[step];
   return (
     <div className="onb">
       <div className="onb__strip drag-region" />
+      <OnboardingBrand />
+      <OnboardingMusic />
       <main id="main" className="onb__scroll scroll-y" tabIndex={-1}>
         <div className="onb__column">
           <Progress step={step} />

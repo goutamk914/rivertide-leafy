@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState, type DependencyList } from 'r
 import type { EventChannel } from '@shared/ipc-channels';
 import type { EventPayload } from '@shared/ipc';
 import type { DataDomain } from '@shared/types';
-import { errorMessage, on } from '../../lib/ipc';
+import { errorMessage, on, bridgeNow } from '../../lib/ipc';
 
 /** Subscribes to a main-process event for the component's lifetime. The listener can change freely. */
 export function useIpcEvent<C extends EventChannel>(channel: C, listener: (payload: EventPayload<C>) => void): void {
@@ -78,7 +78,7 @@ export function useIpcQuery<T>(load: () => Promise<T>, deps: DependencyList, dom
 
 /** A clock that re-renders every `intervalMs` (for greetings and relative times). */
 export function useNow(intervalMs = 60_000): Date {
-  const [now, setNow] = useState(() => new Date());
+  const [now, setNow] = useState(() => bridgeNow());
   useEffect(() => {
     const timer = setInterval(() => setNow(new Date()), intervalMs);
     return () => clearInterval(timer);
